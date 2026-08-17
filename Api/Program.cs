@@ -1,3 +1,4 @@
+using Api.Middleware;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +30,7 @@ var app = builder.Build();
 //    await context.Response.WriteAsync("End middleware\n");
 //});
 
+//app.UseBrowserAllowedMiddleware(Browser.Chrome, Browser.Edge); //Custom Middleware
 
 if (app.Environment.IsDevelopment())
 {

@@ -1,13 +1,11 @@
+using Api.Configuration;
 using Api.Middleware;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers(); //WebApi der Console hinzu
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder
+    .AddWebApi();
 
 var app = builder.Build();
 

@@ -8,6 +8,11 @@ namespace Api.Controllers;
 [ApiController]
 public class QotdController(ILogger<QotdController> logger) : ControllerBase
 {
+    /// <summary>
+    /// Retrieves the quote ofthe day
+    /// </summary>
+    /// <returns>qotdDto</returns>
+    /// <returns>qotdDto</returns>
     [HttpGet]  //=> localhost:1234/api/qotd
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

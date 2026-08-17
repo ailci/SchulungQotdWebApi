@@ -23,18 +23,6 @@ public class QotdController(ILogger<QotdController> logger, QotdDbContext contex
     {
         logger.LogInformation($"{nameof(GetQuoteOfTheDay)} aufgerufen...");
 
-        var test = await context.Authors.ToListAsync();
 
-
-        var qotdDto = new QuoteOfTheDayDto
-        {
-            Id = Guid.NewGuid(),
-            AuthorName = "Ali Ilci",
-            AuthorDescription = "Dozent",
-            AuthorBirthDate = new DateOnly(1978, 07, 13),
-            QuoteText = "Larum lierum Löffelstiel"
-        };
-
-        return qotdDto;
     }
 }

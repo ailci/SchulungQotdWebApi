@@ -1,11 +1,15 @@
 using Api.Configuration;
 using Api.Middleware;
+using Infrastructure;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder
     .AddWebApi();
+
+//Fügt Db hinzu
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 

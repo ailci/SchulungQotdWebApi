@@ -1,12 +1,14 @@
 ﻿using Application.Dto.Qotd;
+using Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Controllers;
 
 [Route("api/[controller]")]  //localhost:1234/api/qotd
 [ApiController]
-public class QotdController(ILogger<QotdController> logger) : ControllerBase
+public class QotdController(ILogger<QotdController> logger, QotdDbContext context) : ControllerBase
 {
     /// <summary>
     /// Retrieves the quote ofthe day
@@ -17,9 +19,12 @@ public class QotdController(ILogger<QotdController> logger) : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<QuoteOfTheDayDto> GetQuoteOfTheDay()
+    public async Task<ActionResult<QuoteOfTheDayDto>> GetQuoteOfTheDay()
     {
         logger.LogInformation($"{nameof(GetQuoteOfTheDay)} aufgerufen...");
+
+        var test = await context.Authors.ToListAsync();
+
 
         var qotdDto = new QuoteOfTheDayDto
         {

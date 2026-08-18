@@ -23,6 +23,20 @@ public class QotdController(ILogger<QotdController> logger, QotdDbContext contex
     {
         logger.LogInformation($"{nameof(GetQuoteOfTheDay)} aufgerufen...");
 
+        var quotes = await context.Quotes.Include(c => c.Author).AsNoTracking().ToListAsync();
+        var randomQuote = quotes.Shuffle().First();
 
+        var qotdDto = new QuoteOfTheDayDto
+        {
+            Id = randomQuote.Id,
+            AuthorName = randomQuote.Author?.Name ?? string.Empty,
+            AuthorDescription = randomQuote.Author?.Description ?? string.Empty,
+            AuthorBirthDate = randomQuote.Author?.BirthDate,
+            AuthorPhoto = randomQuote.Author?.Photo,
+            AuthorPhotoMimeType = randomQuote.Author?.PhotoMimeType,
+            QuoteText = randomQuote.QuoteText
+        };
+
+        return Ok(qotdDto);
     }
 }

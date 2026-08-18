@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Text;
 using Application.Contracts.Services;
 using Application.Dto.Author;
+using AutoMapper;
 using Domain.Entities;
 using Domain.Exceptions;
 
 namespace Infrastructure.Services;
 
-public class AuthorService(ILogger<AuthorService> logger, IDbContextFactory<QotdDbContext> contextFactory) : IAuthorService
+public class AuthorService(ILogger<AuthorService> logger, IDbContextFactory<QotdDbContext> contextFactory, IMapper mapper) : IAuthorService
 {
     public async Task<IEnumerable<AuthorDto>> GetAuthorsAsync()
     {
@@ -21,15 +22,17 @@ public class AuthorService(ILogger<AuthorService> logger, IDbContextFactory<Qotd
         var authors = await context.Authors.AsNoTracking().ToListAsync();
 
         //1. Manuelles Mapping
-        return authors.Select(author => new AuthorDto
-        {
-            Id = author.Id,
-            Name = author.Name,
-            Description = author.Description,
-            BirthDate = author.BirthDate,
-            Photo = author.Photo,
-            PhotoMimeType = author.PhotoMimeType
-        });
+        //return authors.Select(author => new AuthorDto
+        //{
+        //    Id = author.Id,
+        //    Name = author.Name,
+        //    Description = author.Description,
+        //    BirthDate = author.BirthDate,
+        //    Photo = author.Photo,
+        //    PhotoMimeType = author.PhotoMimeType
+        //});
+
+        return mapper.Map<IEnumerable<AuthorDto>>(authors);
     }
 
     public async Task<AuthorDto> GetAuthorAsync(Guid authorId)
@@ -38,15 +41,17 @@ public class AuthorService(ILogger<AuthorService> logger, IDbContextFactory<Qotd
 
         var authorEntity = await GetAuthorAndCheckIfItExists(authorId);
 
-        return new AuthorDto
-        {
-            Id = authorEntity.Id,
-            Name = authorEntity.Name,
-            Description = authorEntity.Description,
-            BirthDate = authorEntity.BirthDate,
-            Photo = authorEntity.Photo,
-            PhotoMimeType = authorEntity.PhotoMimeType
-        };
+        //return new AuthorDto
+        //{
+        //    Id = authorEntity.Id,
+        //    Name = authorEntity.Name,
+        //    Description = authorEntity.Description,
+        //    BirthDate = authorEntity.BirthDate,
+        //    Photo = authorEntity.Photo,
+        //    PhotoMimeType = authorEntity.PhotoMimeType
+        //};
+
+        return mapper.Map<AuthorDto>(authorEntity);
     }
 
     public async Task DeleteAuthorAsync(Guid authorId)

@@ -1,5 +1,6 @@
 ﻿using Application.Contracts.Services;
 using Application.Dto.Author;
+using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -65,10 +66,15 @@ public class AuthorsController(ILogger<AuthorsController> logger, IServiceManage
     #region POST
 
     [HttpPost(Name = "CreateAuthor")]
+    [Consumes("multipart/form-data")] //wenn eine Datei kommt dann umstellen, ansonsten 415 UnsupportedMediaType
     public async Task<IActionResult> CreateAuthor(AuthorForCreateDto authorForCreateDto)
     {
+        logger.LogInformation($"{nameof(CreateAuthor)} aufgerufen...");
+
         //TODO: Speichern + Rückgabe des neuen Authors
-        
+        var createdAuthorDto = await serviceManager.AuthorService.CreateAuthorAsync(authorForCreateDto);
+
+        return NoContent();
     }
 
     #endregion

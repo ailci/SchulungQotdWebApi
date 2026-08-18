@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Application.Contracts.Services;
 using Application.Dto.Author;
+using Application.Utilities;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Exceptions;
@@ -65,6 +66,16 @@ public class AuthorService(ILogger<AuthorService> logger, IDbContextFactory<Qotd
         if (await context.SaveChangesAsync() != 1)
             throw new AuthorNotDeletedException(authorEntity.Name);
 
+    }
+
+    public async Task<AuthorDto> CreateAuthorAsync(AuthorForCreateDto authorForCreateDto)
+    {
+        logger.LogInformation($"{nameof(GetAuthorsAsync)} mit AuthorForCreateDto: {authorForCreateDto?.LogAsJson()} aufgerufen...");
+        await using var context = await contextFactory.CreateDbContextAsync();
+
+        //TODO: Mappen + Speichern
+
+        return null;
     }
 
     private async Task<Author> GetAuthorAndCheckIfItExists(Guid authorId)

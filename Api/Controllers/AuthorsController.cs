@@ -61,4 +61,15 @@ public class AuthorsController(ILogger<AuthorsController> logger, IServiceManage
     }
 
     #endregion
+
+    #region POST
+
+    [HttpPost(Name = "CreateAuthor")]
+    public async Task<IActionResult> CreateAuthor(AuthorForCreateDto authorForCreateDto)
+    {
+        //TODO: Speichern + Rückgabe des neuen Authors
+        
+    }
+
+    #endregion
 }

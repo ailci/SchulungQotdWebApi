@@ -35,6 +35,8 @@ var app = builder.Build();
 
 //app.UseBrowserAllowedMiddleware(Browser.Chrome, Browser.Edge); //Custom Middleware
 
+app.UseExceptionHandler(opt => { });
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

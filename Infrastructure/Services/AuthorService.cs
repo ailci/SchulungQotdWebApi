@@ -38,8 +38,6 @@ public class AuthorService(ILogger<AuthorService> logger, IDbContextFactory<Qotd
 
         var authorEntity = await GetAuthorAndCheckIfItExists(authorId);
 
-        if (authorEntity is null) return null;
-
         return new AuthorDto
         {
             Id = authorEntity.Id,
@@ -49,6 +47,19 @@ public class AuthorService(ILogger<AuthorService> logger, IDbContextFactory<Qotd
             Photo = authorEntity.Photo,
             PhotoMimeType = authorEntity.PhotoMimeType
         };
+    }
+
+    public async Task DeleteAuthorAsync(Guid authorId)
+    {
+        logger.LogWarning($"{nameof(DeleteAuthorAsync)} wurde mit Author-Id {authorId} aufgerufen...");
+        await using var context = await contextFactory.CreateDbContextAsync();
+        
+        var authorEntity = await GetAuthorAndCheckIfItExists(authorId);
+        context.Authors.Remove(authorEntity);
+
+        if (await context.SaveChangesAsync() != 1)
+            throw new AuthorNotDeletedException(authorEntity.Name);
+
     }
 
     private async Task<Author> GetAuthorAndCheckIfItExists(Guid authorId)

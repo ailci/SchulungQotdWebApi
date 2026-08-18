@@ -39,4 +39,26 @@ public class AuthorsController(ILogger<AuthorsController> logger, IServiceManage
     }
 
     #endregion
+
+    #region DELETE
+
+    /// <summary>
+    /// Deletes an author
+    /// </summary>
+    /// <param name="authorId">the unique identifer of the author to delete</param>
+    /// <returns>if the author was successfully deleted</returns>
+    [HttpDelete("{authorId:guid}", Name = "DeleteAuthor")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+    public async Task<IActionResult> DeleteAuthor(Guid authorId)
+    {
+        logger.LogInformation($"{nameof(GetAuthor)} mit AuthorId: {authorId} aufgerufen...");
+        await serviceManager.AuthorService.DeleteAuthorAsync(authorId);
+
+        return NoContent();
+    }
+
+    #endregion
 }

@@ -1,4 +1,6 @@
-﻿namespace Api.Configuration;
+﻿using Api.Handler;
+
+namespace Api.Configuration;
 
 public static class WebApplicationBuilderExtensions
 {
@@ -10,6 +12,10 @@ public static class WebApplicationBuilderExtensions
             
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+
+            //Global Exception Handler
+            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+            builder.Services.AddProblemDetails();
 
             return builder;
         }

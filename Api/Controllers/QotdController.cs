@@ -9,7 +9,7 @@ namespace Api.Controllers;
 
 [Route("api/[controller]")]  //localhost:1234/api/qotd
 [ApiController]
-public class QotdController(ILogger<QotdController> logger, IQotdService qotdService) : ControllerBase
+public class QotdController(ILogger<QotdController> logger, IServiceManager serviceManager) : ControllerBase
 {
     /// <summary>
     /// Retrieves the quote ofthe day
@@ -24,7 +24,7 @@ public class QotdController(ILogger<QotdController> logger, IQotdService qotdSer
     {
         logger.LogInformation($"{nameof(GetQuoteOfTheDay)} aufgerufen...");
 
-        var qotdDto = await qotdService.GetQuoteOfTheDayAsync();
+        var qotdDto = await serviceManager.QotdService.GetQuoteOfTheDayAsync();
 
         return Ok(qotdDto);
     }

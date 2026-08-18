@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Text;
 using Application.Contracts.Services;
 using Application.Dto.Author;
+using Domain.Entities;
+using Domain.Exceptions;
 
 namespace Infrastructure.Services;
 
@@ -33,23 +35,29 @@ public class AuthorService(ILogger<AuthorService> logger, IDbContextFactory<Qotd
     public async Task<AuthorDto> GetAuthorAsync(Guid authorId)
     {
         logger.LogInformation($"{nameof(GetAuthorsAsync)} mit AuthorID: {authorId} aufgerufen...");
-        await using var context = await contextFactory.CreateDbContextAsync();
 
-        //var author = await context.Authors.Where(c => c.Id == authorId);
-        //var author = await context.Authors.FirstOrDefaultAsync(c => c.Id == authorId);
-        //var author = await context.Authors.SingleOrDefaultAsync(c => c.Id == authorId);
-        var author = await context.Authors.FindAsync(authorId);
+        var authorEntity = await GetAuthorAndCheckIfItExists(authorId);
 
-        if (author is null) return null;
+        if (authorEntity is null) return null;
 
         return new AuthorDto
         {
-            Id = author.Id,
-            Name = author.Name,
-            Description = author.Description,
-            BirthDate = author.BirthDate,
-            Photo = author.Photo,
-            PhotoMimeType = author.PhotoMimeType
+            Id = authorEntity.Id,
+            Name = authorEntity.Name,
+            Description = authorEntity.Description,
+            BirthDate = authorEntity.BirthDate,
+            Photo = authorEntity.Photo,
+            PhotoMimeType = authorEntity.PhotoMimeType
         };
+    }
+
+    private async Task<Author> GetAuthorAndCheckIfItExists(Guid authorId)
+    {
+        await using var context = await contextFactory.CreateDbContextAsync();
+        var author = await context.Authors.FindAsync(authorId);
+
+        if (author is null) throw new AuthorNotFoundException(authorId);
+
+        return author;
     }
 }

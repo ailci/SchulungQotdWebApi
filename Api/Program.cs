@@ -1,4 +1,5 @@
 using Api.Configuration;
+using Api.Controllers;
 using Api.Middleware;
 using Infrastructure;
 using Scalar.AspNetCore;

@@ -23,5 +23,20 @@ public class AuthorsController(ILogger<AuthorsController> logger, IServiceManage
         return Ok(await serviceManager.AuthorService.GetAuthorsAsync());
     }
 
+
+    [HttpGet("{id:guid}", Name = "GetAuthor")]  // localhost:1234/api/authors/{id}
+    [ProducesResponseType<AuthorDto>(StatusCodes.Status200OK, Description = "The authors")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAuthor(Guid id)
+    {
+        logger.LogInformation($"{nameof(GetAuthor)} mit AuthorId: {id} aufgerufen...");
+
+        var authorDto = await serviceManager.AuthorService.GetAuthorAsync(id);
+
+        if (authorDto is null) return NotFound();
+
+        return Ok(authorDto);
+    }
+
     #endregion
 }

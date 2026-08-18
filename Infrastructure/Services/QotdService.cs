@@ -8,11 +8,13 @@ using System.Text;
 
 namespace Infrastructure.Services;
 
-public class QotdService(ILogger<QotdService> logger, QotdDbContext context) : IQotdService
+public class QotdService(ILogger<QotdService> logger, IDbContextFactory<QotdDbContext> contextFactory) : IQotdService
 {
     public async Task<QuoteOfTheDayDto> GetQuoteOfTheDayAsync()
     {
         logger.LogInformation($"{nameof(GetQuoteOfTheDayAsync)} aufgerufen...");
+
+        await using var context = await contextFactory.CreateDbContextAsync();
 
         var quotes = await context.Quotes.Include(c => c.Author).AsNoTracking().ToListAsync();
         var randomQuote = quotes.Shuffle().First();

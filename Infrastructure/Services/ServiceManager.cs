@@ -5,7 +5,8 @@ using Application.Contracts.Services;
 
 namespace Infrastructure.Services;
 
-public class ServiceManager(IQotdService qotdService) : IServiceManager
+public class ServiceManager(IQotdService qotdService, IAuthorService authorService) : IServiceManager
 {
     public IQotdService QotdService => qotdService;
+    public IAuthorService AuthorService => authorService;
 }

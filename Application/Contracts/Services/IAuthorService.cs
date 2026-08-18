@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Application.Dto.Author;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Application.Contracts.Services
+namespace Application.Contracts.Services;
+
+public interface IAuthorService
 {
-    internal interface IAuthorService
-    {
-    }
+    Task<IEnumerable<AuthorDto>> GetAuthorsAsync();
 }

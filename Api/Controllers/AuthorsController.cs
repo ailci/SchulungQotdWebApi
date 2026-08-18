@@ -1,11 +1,27 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Application.Contracts.Services;
+using Application.Dto.Author;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers
+namespace Api.Controllers;
+
+[Route("api/[controller]")] // localhost:1234/api/authors
+[ApiController]
+public class AuthorsController(ILogger<AuthorsController> logger, IServiceManager serviceManager) : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthorsController : ControllerBase
+    #region GET
+
+    [HttpGet]
+    [ProducesResponseType<IEnumerable<AuthorDto>>(StatusCodes.Status200OK, Description = "The authors")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAuthors()
     {
+        logger.LogInformation($"{nameof(GetAuthors)} aufgerufen...");
+
+        return Ok(await serviceManager.AuthorService.GetAuthorsAsync());
     }
+
+    #endregion
 }

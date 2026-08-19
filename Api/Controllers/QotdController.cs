@@ -40,6 +40,7 @@ public class QotdController(ILogger<QotdController> logger, IServiceManager serv
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ServiceFilter(typeof(TimeAsyncAttribute))] // ServiceFilter wrappen
+    [ServiceFilter(typeof(ApiKeyAuthFilter))]
     public async Task<ActionResult<QuoteOfTheDayDto>> GetQuoteOfTheDaySecured()
     {
         logger.LogInformation($"{nameof(GetQuoteOfTheDaySecured)} aufgerufen...");

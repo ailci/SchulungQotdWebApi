@@ -27,6 +27,7 @@ public static class WebApplicationBuilderExtensions
 
             //Filter als Service registrieren
             builder.Services.AddScoped<TimeAsyncAttribute>();
+            builder.Services.AddScoped<ApiKeyAuthFilter>();
 
             return builder;
         }

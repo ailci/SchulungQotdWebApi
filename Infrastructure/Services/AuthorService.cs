@@ -77,7 +77,7 @@ public class AuthorService(ILogger<AuthorService> logger, IDbContextFactory<Qotd
 
         logger.LogInformation($"AuthorEntity nach Mapping: {authorEntity?.LogAsJson()}");
 
-        context.Authors.Add(authorEntity);
+        context.Authors.Add(authorEntity); //Die Id des Authors ist vom SQL Server gefüllt
 
         if (await context.SaveChangesAsync() != 1)
             throw new AuthorNotCreatedException(authorEntity.Name);

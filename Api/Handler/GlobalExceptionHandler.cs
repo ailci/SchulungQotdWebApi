@@ -16,7 +16,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger, IPro
         httpContext.Response.StatusCode = exception switch
         {
             NotFoundException => StatusCodes.Status404NotFound, //enthält auch AuthorNotFoundException
-            NotDeletedException => StatusCodes.Status422UnprocessableEntity,
+            NotDeletedException or NotCreatedException => StatusCodes.Status422UnprocessableEntity,
             _ => StatusCodes.Status500InternalServerError
         };
 

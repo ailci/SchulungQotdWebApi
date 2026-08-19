@@ -71,10 +71,9 @@ public class AuthorsController(ILogger<AuthorsController> logger, IServiceManage
     {
         logger.LogInformation($"{nameof(CreateAuthor)} aufgerufen...");
 
-        //TODO: Speichern + Rückgabe des neuen Authors
         var createdAuthorDto = await serviceManager.AuthorService.CreateAuthorAsync(authorForCreateDto);
 
-        return NoContent();
+        return CreatedAtRoute(nameof(GetAuthor), new { id = createdAuthorDto.Id }, createdAuthorDto);
     }
 
     #endregion

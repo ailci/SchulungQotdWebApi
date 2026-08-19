@@ -7,6 +7,13 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddApplicationServices();
 
+//Named Client
+builder.Services.AddHttpClient("qotdapiservice", configure =>
+{
+    configure.BaseAddress = new Uri("https://localhost:7031");
+    configure.DefaultRequestHeaders.Add("Accept","application/json");
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline. #################################################################

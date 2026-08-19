@@ -8,4 +8,5 @@ namespace Application.Contracts.Services;
 public interface IQotdService
 {
     Task<QuoteOfTheDayDto> GetQuoteOfTheDayAsync();
+    Task<QuoteOfTheDayDto> GetQuoteOfTheDaySecuredAsync();
 }

@@ -1,16 +1,31 @@
 using Application;
+using Application.Contracts.Services;
+using Microsoft.Extensions.Options;
+using UI.Client.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
 builder.Services.AddApplicationServices();
 
+//AppSettings
+var qotdAppSettings = builder.Configuration.GetSection(nameof(QotdAppSettings)).Get<QotdAppSettings>();
+builder.Services.Configure<QotdAppSettings>(builder.Configuration.GetSection(nameof(QotdAppSettings))); //Options Pattern
+
+//DI
+builder.Services.AddScoped<IQotdService, QotdApiService>();
+
 //Named Client
-builder.Services.AddHttpClient("qotdapiservice", configure =>
+builder.Services.AddHttpClient("qotdapiservice", (sp, configure) =>
 {
-    configure.BaseAddress = new Uri("https://localhost:7031");
+    configure.BaseAddress = new Uri(qotdAppSettings?.QotdServiceApiUri!);
+
+    //Alternative
+    //var apiSettings = sp.GetRequiredService<IOptions<QotdAppSettings>>().Value;
+    //configure.BaseAddress = new Uri(apiSettings?.QotdServiceApiUri!);
+
+    //configure.BaseAddress = new Uri("https://localhost:7031");
     configure.DefaultRequestHeaders.Add("Accept","application/json");
 });
 

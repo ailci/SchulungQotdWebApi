@@ -35,4 +35,9 @@ public class QotdService(ILogger<QotdService> logger, IDbContextFactory<QotdDbCo
         //Automapper
         return mapper.Map<QuoteOfTheDayDto>(randomQuote);
     }
+
+    public async Task<QuoteOfTheDayDto> GetQuoteOfTheDaySecuredAsync()
+    {
+        return await GetQuoteOfTheDayAsync();
+    }
 }

@@ -16,6 +16,14 @@ else
                 <h5 class="display-6 py-3">Spruch Des Tages</h5>
                 <p class="text-center">
                     <!-- Bild des Authors -->
+                    @if(!string.IsNullOrWhiteSpace(Model.QotdDto?.AuthorPhotoMimeType) && Model.QotdDto.AuthorPhoto is not null)
+                    {
+                        <img width="150" src="data:@Model.QotdDto.AuthorPhotoMimeType;base64,@Convert.ToBase64String(Model.QotdDto?.AuthorPhoto)" alt="@Model.QotdDto?.AuthorName" />
+                    }
+                    else
+                    {
+                        <img width="150" src="https://placehold.co/150" alt="@Model.QotdDto?.AuthorName" />
+                    }
                 </p>
                 <blockquote class="text-center">
                     <p class="lead fw-bold">@Model?.QotdDto?.QuoteText</p>

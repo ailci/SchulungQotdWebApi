@@ -73,9 +73,16 @@ public class AuthorService(ILogger<AuthorService> logger, IDbContextFactory<Qotd
         logger.LogInformation($"{nameof(GetAuthorsAsync)} mit AuthorForCreateDto: {authorForCreateDto?.LogAsJson()} aufgerufen...");
         await using var context = await contextFactory.CreateDbContextAsync();
 
-        //TODO: Mappen + Speichern
+        var authorEntity = mapper.Map<Author>(authorForCreateDto);
 
-        return null;
+        logger.LogInformation($"AuthorEntity nach Mapping: {authorEntity?.LogAsJson()}");
+
+        context.Authors.Add(authorEntity);
+
+        if (await context.SaveChangesAsync() != 1)
+            throw new AuthorNotCreatedException(authorEntity.Name);
+
+        return mapper.Map<AuthorDto>(authorEntity);
     }
 
     private async Task<Author> GetAuthorAndCheckIfItExists(Guid authorId)

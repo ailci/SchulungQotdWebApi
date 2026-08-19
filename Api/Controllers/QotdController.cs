@@ -1,4 +1,5 @@
-﻿using Application.Contracts.Services;
+﻿using Api.Filter;
+using Application.Contracts.Services;
 using Application.Dto.Qotd;
 using Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +24,25 @@ public class QotdController(ILogger<QotdController> logger, IServiceManager serv
     public async Task<ActionResult<QuoteOfTheDayDto>> GetQuoteOfTheDay()
     {
         logger.LogInformation($"{nameof(GetQuoteOfTheDay)} aufgerufen...");
+
+        var qotdDto = await serviceManager.QotdService.GetQuoteOfTheDayAsync();
+
+        return Ok(qotdDto);
+    }
+    
+    /// <summary>
+    /// Retrieves the quote ofthe day with apiKey
+    /// </summary>
+    /// <returns>qotdDto</returns>
+    /// <returns>qotdDto</returns>
+    [HttpGet("secured")]  //=> localhost:1234/api/qotd/secured
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ServiceFilter(typeof(TimeAsyncAttribute))] // ServiceFilter wrappen
+    public async Task<ActionResult<QuoteOfTheDayDto>> GetQuoteOfTheDaySecured()
+    {
+        logger.LogInformation($"{nameof(GetQuoteOfTheDaySecured)} aufgerufen...");
 
         var qotdDto = await serviceManager.QotdService.GetQuoteOfTheDayAsync();
 

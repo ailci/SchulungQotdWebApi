@@ -1,4 +1,5 @@
-﻿using Api.Handler;
+﻿using Api.Filter;
+using Api.Handler;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Configuration;
@@ -23,6 +24,9 @@ public static class WebApplicationBuilderExtensions
             //Global Exception Handler
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
             builder.Services.AddProblemDetails();
+
+            //Filter als Service registrieren
+            builder.Services.AddScoped<TimeAsyncAttribute>();
 
             return builder;
         }

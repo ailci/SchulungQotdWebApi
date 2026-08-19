@@ -1,6 +1,7 @@
 using Application;
 using Application.Contracts.Services;
 using Microsoft.Extensions.Options;
+using UI.Client.Handler;
 using UI.Client.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,7 @@ builder.Services.Configure<QotdAppSettings>(builder.Configuration.GetSection(nam
 
 //DI
 builder.Services.AddScoped<IQotdService, QotdApiService>();
+builder.Services.AddTransient<ApiKeyDelegatingHandler>();
 
 //Named Client
 builder.Services.AddHttpClient("qotdapiservice", (sp, configure) =>
@@ -27,7 +29,7 @@ builder.Services.AddHttpClient("qotdapiservice", (sp, configure) =>
 
     //configure.BaseAddress = new Uri("https://localhost:7031");
     configure.DefaultRequestHeaders.Add("Accept","application/json");
-});
+}).AddHttpMessageHandler<ApiKeyDelegatingHandler>();
 
 var app = builder.Build();
 

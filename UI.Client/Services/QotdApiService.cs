@@ -28,7 +28,7 @@ public class QotdApiService(ILogger<QotdApiService> logger, IHttpClientFactory h
 
         var client = httpClientFactory.CreateClient("qotdapiservice");
 
-        client.DefaultRequestHeaders.Add("x-api-key",_appSettings.XApiKey);
+        //client.DefaultRequestHeaders.Add("x-api-key",_appSettings.XApiKey);
 
         var response = await client.GetFromJsonAsync<QuoteOfTheDayDto>(QotdSecuredUri);
 

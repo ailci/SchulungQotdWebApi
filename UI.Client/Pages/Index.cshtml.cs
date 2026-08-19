@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace UI.Client.Pages;
     
-public class IndexModel(ILogger<IndexModel> logger, IHttpClientFactory httpClientFactory, IQotdService apiService) : PageModel
+public class IndexModel(ILogger<IndexModel> logger, IHttpClientFactory httpClientFactory, IQotdService apiService, IQotdRefitService qotdRefitService) : PageModel
 {
     public QuoteOfTheDayDto? QotdDto { get; set; }
     public string? ErrorMessage { get; set; }
@@ -33,7 +33,13 @@ public class IndexModel(ILogger<IndexModel> logger, IHttpClientFactory httpClien
             //QotdDto = await apiService.GetQuoteOfTheDayAsync();
 
             //4. Version mit Api-Key
-            QotdDto = await apiService.GetQuoteOfTheDaySecuredAsync();
+            //QotdDto = await apiService.GetQuoteOfTheDaySecuredAsync();
+
+            //5. Version REfit
+            //QotdDto = await qotdRefitService.GetQuoteOfTheDayAsync();
+
+            //6.Version Refit und ApiKey
+            QotdDto = await qotdRefitService.GetQuoteOfTheDaySecuredAsync();
         }
         catch (HttpRequestException e)
         {

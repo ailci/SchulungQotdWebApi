@@ -1,6 +1,7 @@
 using Application;
 using Application.Contracts.Services;
 using Microsoft.Extensions.Options;
+using Refit;
 using UI.Client.Handler;
 using UI.Client.Services;
 
@@ -30,6 +31,17 @@ builder.Services.AddHttpClient("qotdapiservice", (sp, configure) =>
     //configure.BaseAddress = new Uri("https://localhost:7031");
     configure.DefaultRequestHeaders.Add("Accept","application/json");
 }).AddHttpMessageHandler<ApiKeyDelegatingHandler>();
+
+
+//Refit Client
+builder.Services.AddRefitClient<IQotdRefitService>()
+    .ConfigureHttpClient((sp, configure) =>
+    {
+        var apiSettings = sp.GetRequiredService<IOptions<QotdAppSettings>>().Value;
+        configure.BaseAddress = new Uri(apiSettings?.QotdServiceApiUri!);
+        configure.DefaultRequestHeaders.Add("Accept", "application/json");
+    }).AddHttpMessageHandler<ApiKeyDelegatingHandler>();
+
 
 var app = builder.Build();
 

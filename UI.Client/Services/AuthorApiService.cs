@@ -25,7 +25,13 @@ public class AuthorApiService(ILogger<AuthorApiService> logger, IOptions<QotdApp
 
     public async Task DeleteAuthorAsync(Guid authorId)
     {
-        throw new NotImplementedException();
+        logger.LogInformation($"{nameof(DeleteAuthorAsync)} API aufgerufen...");
+
+        var client = httpClientFactory.CreateClient("qotdapiservice");
+
+        var response = await client.DeleteAsync($"{QotdAuthorsUri}/{authorId}"); // api/authors/{authorId}
+
+        if (response is null) throw new HttpRequestException("Response is null");
     }
 
     public async Task<AuthorDto> CreateAuthorAsync(AuthorForCreateDto authorForCreateDto)

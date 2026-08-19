@@ -24,4 +24,26 @@ public class OverviewModel(ILogger<OverviewModel> logger, IAuthorService apiAuth
             logger.LogError(e.Message);
         }
     }
+
+    public async Task<IActionResult> OnPostDeleteAsync(Guid id)
+    {
+        try
+        {
+            logger.LogInformation($"Löschen für AuthorId: {id} aufgerufen...");
+
+            await apiAuthorService.DeleteAuthorAsync(id);
+
+            return RedirectToPage();
+        }
+        catch (HttpRequestException e)
+        {
+            logger.LogError($"{e.StatusCode} ## {e.Message}");
+            return Page();
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e.Message);
+            return Page();
+        }
+    }
 }

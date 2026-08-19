@@ -4,5 +4,6 @@
     <Project Path="Application/Application.csproj" />
     <Project Path="Domain/Domain.csproj" />
     <Project Path="Infrastructure/Infrastructure.csproj" />
+    <Project Path="UI.Client/UI.Client.csproj" Id="4a0bf28d-d2e5-4692-aedf-cdd1007e4740" />
   </Folder>
 </Solution>

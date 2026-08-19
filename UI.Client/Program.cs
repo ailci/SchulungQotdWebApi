@@ -17,6 +17,7 @@ builder.Services.Configure<QotdAppSettings>(builder.Configuration.GetSection(nam
 
 //DI
 builder.Services.AddScoped<IQotdService, QotdApiService>();
+builder.Services.AddScoped<IAuthorService, AuthorApiService>();
 builder.Services.AddTransient<ApiKeyDelegatingHandler>();
 
 //Named Client

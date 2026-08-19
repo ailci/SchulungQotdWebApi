@@ -1,0 +1,40 @@
+﻿@page
+@model UI.Client.Pages.Author.OverviewModel
+
+@if (Model.AuthorDtos.Any())
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Beschreibung</th>
+                <th>Geburtsdatum</th>
+                <th>Aktion</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var authorDto in Model.AuthorDtos)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(authorDto?.PhotoMimeType) && authorDto.Photo is not null)
+                        {
+                            <img width="100" src="data:@authorDto.PhotoMimeType;base64,@Convert.ToBase64String(authorDto.Photo)" alt="@authorDto.Name" />
+                        }
+                        else
+                        {
+                            <img width="100" src="https://placehold.co/100" alt="@authorDto?.Name" />
+                        }
+                    </td>
+                    <td>@authorDto?.Name</td>
+                    <td>@authorDto?.Description</td>
+                    <td>@(authorDto?.BirthDate is not null ? authorDto.BirthDate.Value.ToShortDateString() : "k.A.")</td>
+                    <td>
+                        <!-- Aktionen -->
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

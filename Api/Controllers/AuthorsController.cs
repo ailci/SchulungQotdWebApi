@@ -71,6 +71,8 @@ public class AuthorsController(ILogger<AuthorsController> logger, IServiceManage
     {
         logger.LogInformation($"{nameof(CreateAuthor)} aufgerufen...");
 
+        //if(!ModelState.IsValid) return BadRequest(ModelState);
+
         var createdAuthorDto = await serviceManager.AuthorService.CreateAuthorAsync(authorForCreateDto);
 
         return CreatedAtRoute(nameof(GetAuthor), new { id = createdAuthorDto.Id }, createdAuthorDto);
